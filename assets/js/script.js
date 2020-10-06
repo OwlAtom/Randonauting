@@ -5,12 +5,47 @@ function getYear() {
 }
 let body = document.querySelector("body");
 body.addEventListener("keydown", function (event) {
-    console.log(event.keyCode)
+    // console.log(event.key)
 });
 body.addEventListener("mousedown", function (event) {
     // console.log(event.path[0])
 });
 
+
+function randonaut() {
+    let firstDieRoll = fakeDieRoll();
+    let secondDieRoll = fakeDieRoll();
+    let randomRotation = handleDieRoll(firstDieRoll, secondDieRoll) * 360;
+    console.log(randomRotation)
+    
+    let thirdDieRoll = fakeDieRoll();
+    let fourthDieRoll = fakeDieRoll();
+    let maxDistance = 1000;
+    let randomDistance = Math.sqrt(handleDieRoll(thirdDieRoll, fourthDieRoll))*maxDistance;
+    console.log(randomDistance);
+    
+    let xDistance = randomDistance * Math.cos(randomRotation);
+    let yDistance = randomDistance * Math.sin(randomRotation);
+
+    let earth = 6378.137,  //radius of the earth in kilometer
+    pi = Math.PI,
+    m = (1 / ((2 * pi / 360) * earth)) / 1000;  //1 meter in degree
+
+    let new_latitude = latitude + (xDistance * m);
+
+    var cos = Math.cos,
+    m = (1 / ((2 * pi / 360) * earth)) / 1000;  //1 meter in degree
+
+    var new_longitude = longitude + (yDistance * m) / cos(latitude * (pi / 180));
+    
+}
+
+function handleDieRoll(first, second) {
+    return "." + first + second;
+}
+function fakeDieRoll() {
+   return Math.floor(Math.random()*10)+1
+}
 
 var slider = document.getElementById("myRange");
 slider.oninput = function () {
