@@ -11,29 +11,64 @@
 
     <link href="assets/css/style.css" rel="stylesheet">
     <script src="assets/js/script.js" defer async></script>
-    <title>Document</title>
+    <title>Randonauting</title>
 </head>
 
 <body onload="getYear()">
     <div id="pageContainer">
         <div id="contentWrap">
             <header>
-                <h1>Project name</h1>
+                <h1>Randonauting</h1>
             </header>
             <section class="threeGrid">
                 <div>
-                    <h2>Main content</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, quis ea voluptas temporibus
-                        ratione
-                        corrupti aut eos suscipit aperiam rem magni eveniet, ipsa distinctio provident aspernatur
-                        maiores
-                        accusamus esse laboriosam.</p>
+                    <h2>What does this site do?</h2>
+                    <p>This website will find a random point close to your current location.</p>
 
-                    <button onclick='randonaut();'>Click me</button>
+                </div>
+                <div>
+                    <h2 id="rangeViz" >Range in meters</h2>
+                    <div class="someMargin">
+                        <input id="range" type="range" min="1" max="500" value="100" >
+                    </div>
+                    <button class="someMargin" onclick='randonaut();'>Randonaut</button> <br>
+                 <a id="mapsLink" href="https://www.linkedin.com/in/owlc/" target="_blank" rel="noopener noreferrer">Go to your random location</a>
                 </div>
                 <div>
                     <div class="someMargin">
-                        <p>First roll</p>
+                        <pre >
+                            <code id="htmlViewer" style="color:rgb(214, 222, 235); font-weight:400;background-color:rgb(1, 22, 39);background:rgb(1, 22, 39);display:block;padding: .5em;"><span style="color:rgb(130, 170, 255); font-weight:400;"><span style="color:rgb(199, 146, 234); font-weight:400;">function</span> <span style="color:rgb(220, 220, 170); font-weight:400;">randonaut</span>(<span style="color:rgb(127, 219, 202); font-weight:400;"></span>) </span>{
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> firstDieRoll = fakeDieRoll();
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> secondDieRoll = fakeDieRoll();
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> randomRotation = handleDieRoll(firstDieRoll, secondDieRoll) * <span style="color:rgb(247, 140, 108); font-weight:400;">360</span>;
+                           
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> thirdDieRoll = fakeDieRoll();
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> fourthDieRoll = fakeDieRoll();
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> maxDistance = range.value * <span style="color:rgb(247, 140, 108); font-weight:400;">10</span>;
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> randomDistance =
+                               <span style="color:rgb(173, 219, 103); font-weight:400;">Math</span>.sqrt(handleDieRoll(thirdDieRoll, fourthDieRoll)) * maxDistance;
+                           
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> xDistance = randomDistance * <span style="color:rgb(173, 219, 103); font-weight:400;">Math</span>.cos(randomRotation);
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> yDistance = randomDistance * <span style="color:rgb(173, 219, 103); font-weight:400;">Math</span>.sin(randomRotation);
+                           
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> earth = <span style="color:rgb(247, 140, 108); font-weight:400;">6378.137</span>, <span style="color:rgb(99, 119, 119); font-weight:400;">//radius of the earth in kilometer</span>
+                               pi = <span style="color:rgb(173, 219, 103); font-weight:400;">Math</span>.PI,
+                               cos = <span style="color:rgb(173, 219, 103); font-weight:400;">Math</span>.cos,
+                               m = <span style="color:rgb(247, 140, 108); font-weight:400;">1</span> / (((<span style="color:rgb(247, 140, 108); font-weight:400;">2</span> * pi) / <span style="color:rgb(247, 140, 108); font-weight:400;">360</span>) * earth) / <span style="color:rgb(247, 140, 108); font-weight:400;">1000</span>; <span style="color:rgb(99, 119, 119); font-weight:400;">//1 meter in degree</span>
+                           
+                             getLocation();
+                           
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> new_latitude = latitude + xDistance * m;
+                             <span style="color:rgb(173, 219, 103); font-weight:400;">console</span>.log(new_latitude);
+                           
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> new_longitude = longitude + (yDistance * m) / cos(latitude * (pi / <span style="color:rgb(247, 140, 108); font-weight:400;">180</span>));
+                             <span style="color:rgb(173, 219, 103); font-weight:400;">console</span>.log(new_longitude);
+                             <span style="color:rgb(99, 119, 119); font-weight:400;">// let zoom = maxDistance / 1000 * 14;</span>
+                             <span style="color:rgb(199, 146, 234); font-weight:400;">let</span> outputUrl = <span style="color:rgb(236, 196, 141); font-weight:400;">`https://www.google.com/maps/place/<span style="color:rgb(211, 66, 62); font-weight:400;">${new_latitude}</span>,<span style="color:rgb(211, 66, 62); font-weight:400;">${new_longitude}</span>`</span>;
+                             <span style="color:rgb(173, 219, 103); font-weight:400;">document</span>.querySelector(<span style="color:rgb(236, 196, 141); font-weight:400;">&quot;#mapsLink&quot;</span>).href = outputUrl;
+                             <span style="color:rgb(173, 219, 103); font-weight:400;">console</span>.log(outputUrl);
+                           }</code></pre>
+                        <!-- <p>First roll</p>
                         <select name="" id="die1">
                             <option value=1>1</option>
                             <option value=2>2</option>
@@ -61,22 +96,8 @@
                         <label class="checkboxContainer">Computer Roll die #4?
                             <input id="CPUdie4" type="checkbox">
                             <span class="checkmark"></span>
-                        </label>
+                        </label> -->
                     </div>
-                    <div class="rangeContainer someMargin">
-                        <input type="range" min="1" max="100" value="1" id="myRange">
-                    </div>
-                </div>
-                <div>
-                    <select name="" id="">
-                        <option value="A">A</option>
-                        <option value="B" id="demo">B</option>
-                    </select>
-                    <div class="someMargin verticalGrid">
-                        <input type="text" name="" id="">
-                        <textarea class="someMarginOver" name="" id="" cols="30" rows="10"></textarea>
-                    </div>
-
                 </div>
             </section>
         </div>
